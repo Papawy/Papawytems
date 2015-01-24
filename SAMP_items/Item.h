@@ -69,5 +69,7 @@ private:
 	ObjectPosition m_position;
 
 	bool m_showed;
+
+	int m_gtaObjectId;
 };
 #endif // ITEM_H_INCLUDED
