@@ -7,7 +7,7 @@ class ItemShema
 {
 public:
 	ItemShema();
-	ItemShema(std::string itemName, int itemType, int modelId, int nbrVars);
+	ItemShema(std::string itemName, int itemType, int modelId);
 
 	// Setters
 
@@ -25,16 +25,12 @@ public:
 
 	int getItemModel();
 
-	int getItemNbrVars();
-
 	~ItemShema();
 
 private:
 	int m_itemType;
 
 	int m_modelID;
-
-	int m_nbrVars;
 
 	std::string m_itemName;
 };

@@ -7,7 +7,7 @@ ItemShema::ItemShema()
 
 }
 
-ItemShema::ItemShema(std::string itemName, int itemType, int modelId, int nbrVars) : m_itemName(itemName), m_itemType(itemType), m_modelID(modelId), m_nbrVars(nbrVars)
+ItemShema::ItemShema(std::string itemName, int itemType, int modelId) : m_itemName(itemName), m_itemType(itemType), m_modelID(modelId)
 {
 
 }
@@ -29,8 +29,6 @@ std::string ItemShema::getItemName() { return m_itemName; }
 int ItemShema::getItemType() { return m_itemType; }
 
 int ItemShema::getItemModel() { return m_modelID; }
-
-int ItemShema::getItemNbrVars() { return m_nbrVars; }
 
 // -- Destructor
 

@@ -1,3 +1,6 @@
+#ifndef UTILS_H_INCLUDED
+#define UTILS_H_INCLUDED
+
 struct ObjectPosition
 {
 	float px;
@@ -10,3 +13,5 @@ struct ObjectPosition
 };
 
 bool inRange(int value, int min, int max);
+
+#endif // UTILS_H_INCLUDED
