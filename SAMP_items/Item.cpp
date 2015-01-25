@@ -4,28 +4,28 @@
 
 Item::Item()
 {
-	m_shema = nullptr;
+	m_schema = nullptr;
 }
 
-Item::Item(ItemShema& shema)
+Item::Item(ItemSchema& Schema)
 {
-	m_shema = &shema;
+	m_schema = &Schema;
 
-	m_name = m_shema->getItemName();
+	m_name = m_schema->getItemName();
 }
 
-Item::Item(ItemShema& shema, ObjectPosition position)
+Item::Item(ItemSchema& Schema, ObjectPosition position)
 {
-	m_shema = &shema;
+	m_schema = &Schema;
 	m_position = position;
 
-	m_name = m_shema->getItemName();
+	m_name = m_schema->getItemName();
 
 }
 
 Item::Item(const Item& other)
 {
-	m_shema = other.m_shema;
+	m_schema = other.m_schema;
 }
 
 // -- Methods
@@ -70,6 +70,16 @@ bool Item::setVar(std::string varName, int value)
 	}
 }
 
+void Item::setDefaultName()
+{
+	m_name = m_schema->getItemName();
+}
+
+void Item::setDrawDistance(float dist)
+{
+	m_drawDist = dist;
+}
+
 // Accessors
 
 ObjectPosition& Item::getPosition()
@@ -93,25 +103,47 @@ int Item::getVar(std::string varName)
 std::string Item::getName()
 {
 	if (m_name.size() < 0)
-		return m_shema->getItemName();
+		return m_schema->getItemName();
 	else
 		return m_name;
 }
 
-ItemShema& Item::getShema()
+ItemSchema& Item::getSchema()
 {
-	return *m_shema;
+	return *m_schema;
+}
+
+int Item::getObjectID()
+{
+	return m_gtaObjectId;
 }
 
 // --
 
-void Item::Show()
+bool Item::Show()
 {
+	if (m_shown != true)
+	{
+		m_gtaObjectId = CreateObject(m_schema->getItemModel(), m_position.px, m_position.py, m_position.pz, m_position.rx, m_position.ry, m_position.rz, m_drawDist);
+		m_shown = true;
+		return true;
+	}
+	else
+		return false;
 
 }
 
-void Item::Hide()
+bool Item::Hide()
 {
+	if (m_shown != false)
+	{
+		DestroyObject(m_gtaObjectId);
+		m_gtaObjectId = -1;
+		m_shown = false;
+		return true;
+	}
+	else
+		return true;
 
 }
 
@@ -156,9 +188,9 @@ bool Item::isVariableExist(std::string varName)
 	}
 }
 
-void Item::setDefaultName()
+bool Item::isShown()
 {
-	m_name = m_shema->getItemName();
+	return m_shown;
 }
 
 // -- Destructor

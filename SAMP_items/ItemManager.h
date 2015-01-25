@@ -11,22 +11,22 @@ public:
 	ItemManager();
 	~ItemManager();
 
-	int addItemShema(ItemShema& shema);
-	bool removeItemShema(int id);
+	int addItemSchema(ItemSchema& Schema);
+	bool removeItemSchema(int id);
 
 	int addItem(Item& item);
 	bool removeItem(int id);
 
-	ItemShema& accessItemShema(int id);
+	ItemSchema& accessItemSchema(int id);
 
 	Item& accessItem(int id);
 
-	bool itemShemaExist(int id);
+	bool itemSchemaExist(int id);
 
 	bool itemExist(int id);
 
 private:
-	std::map<int, ItemShema> m_itemShemaPool;
+	std::map<int, ItemSchema> m_itemSchemaPool;
 	std::map<int, Item>	m_itemPool;
 
 };

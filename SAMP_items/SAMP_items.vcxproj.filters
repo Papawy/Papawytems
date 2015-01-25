@@ -38,9 +38,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="ItemShema.cpp">
-      <Filter>Fichiers sources\Items</Filter>
-    </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>Fichiers sources\Items</Filter>
     </ClCompile>
@@ -48,6 +45,9 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="ItemManager.cpp">
+      <Filter>Fichiers sources\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemSchema.cpp">
       <Filter>Fichiers sources\Items</Filter>
     </ClCompile>
   </ItemGroup>
@@ -64,13 +64,13 @@
     <ClInclude Include="Utils.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="ItemShema.h">
-      <Filter>Fichiers d%27en-tête\Items</Filter>
-    </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>Fichiers d%27en-tête\Items</Filter>
     </ClInclude>
     <ClInclude Include="ItemManager.h">
+      <Filter>Fichiers d%27en-tête\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemSchema.h">
       <Filter>Fichiers d%27en-tête\Items</Filter>
     </ClInclude>
   </ItemGroup>

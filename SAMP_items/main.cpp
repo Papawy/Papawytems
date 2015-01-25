@@ -1,33 +1,42 @@
-#include "SDK\amx\amx.h"
-#include "SDK\plugincommon.h"
+#include <sampgdk/a_objects.h>
+#include <sampgdk/a_samp.h>
+#include <sampgdk/core.h>
+#include <sampgdk/sdk.h>
 
 #include "ItemManager.h"
-
+/*
 typedef void(*logprintf_t)(char* format, ...);
 
 
-logprintf_t logprintf;
+logprintf_t logprintf;*/
 extern void *pAMXFunctions;
+
+using sampgdk::logprintf;
 
 ItemManager itmManager;
 
-cell AMX_NATIVE_CALL HelloWorld(AMX* amx, cell* params)
+float defaultDrawDist = 300.0;
+
+// PAWN Native : native SetDefaultItemDrawDist(Float:distance) | return : nothing
+cell AMX_NATIVE_CALL SetDefaultItemDrawDist(AMX* amx, cell* params)
 {
-	logprintf("This was printed from the Test plugin! Yay!");
+	defaultDrawDist = amx_ctof(params[1]);
 	return 1;
 }
 
-// ---- ITEM SHEMA ----
+// --- ITEMS MANAGER ---
 
-// PAWN Native : native CreateItemShema(shemaName[], typeID, modelID) | return : shemaID : /!\ Important 
-cell AMX_NATIVE_CALL CreateItemShema(AMX* amx, cell* params)
+// ---- ITEM SCHEMA ----
+
+// PAWN Native : native CreateItemSchema(SchemaName[], typeID, modelID) | return : SchemaID : /!\ Important 
+cell AMX_NATIVE_CALL CreateItemSchema(AMX* amx, cell* params)
 {
-	// Creating temporary shema
-	ItemShema tmpShem;
+	// Creating temporary Schema
+	ItemSchema tmpShem;
 
 	// Getting string param address
 	cell *addr = NULL;
-		// shemaName
+		// SchemaName
 	amx_GetAddr(amx, params[1], &addr);
 
 	// First param
@@ -38,11 +47,11 @@ cell AMX_NATIVE_CALL CreateItemShema(AMX* amx, cell* params)
 	if (len)
 	{
 		len++;
-		char* shemaName = new char[len];
-		amx_GetString(shemaName, addr, 0, len);
+		char* SchemaName = new char[len];
+		amx_GetString(SchemaName, addr, 0, len);
 
-		tmpShem.setItemName(shemaName);
-		delete[] shemaName;
+		tmpShem.setItemName(SchemaName);
+		delete[] SchemaName;
 	}
 
 	// Second param
@@ -51,17 +60,17 @@ cell AMX_NATIVE_CALL CreateItemShema(AMX* amx, cell* params)
 	// Third param
 	tmpShem.setItemModel(params[3]);
 
-	// Pushing tmp shema into ItemManager
-	return itmManager.addItemShema(tmpShem);
+	// Pushing tmp Schema into ItemManager
+	return itmManager.addItemSchema(tmpShem);
 }
 
 
-// PAWN Native : native SetItemShemaName(itemShemaID, shemaName[]) | return 0 if item is not found, or 1 otherwise
-cell AMX_NATIVE_CALL SetItemShemaName(AMX* amx, cell* params)
+// PAWN Native : native SetItemSchemaName(itemSchemaID, SchemaName[]) | return 0 if item is not found, or 1 otherwise
+cell AMX_NATIVE_CALL SetItemSchemaName(AMX* amx, cell* params)
 {
-	if (itmManager.itemShemaExist(params[1]))
+	if (itmManager.itemSchemaExist(params[1]))
 	{
-		// Gettinf new shemaName str
+		// Gettinf new SchemaName str
 		cell *addr = NULL;
 
 		amx_GetAddr(amx, params[2], &addr);
@@ -77,7 +86,7 @@ cell AMX_NATIVE_CALL SetItemShemaName(AMX* amx, cell* params)
 			char* newShemName = new char[len];
 			amx_GetString(newShemName, addr, 0, len);
 
-			itmManager.accessItemShema(params[1]).setItemName(newShemName);
+			itmManager.accessItemSchema(params[1]).setItemName(newShemName);
 			delete[] newShemName;
 		}
 		
@@ -88,24 +97,24 @@ cell AMX_NATIVE_CALL SetItemShemaName(AMX* amx, cell* params)
 
 }
 
-// PAWN Native : native SetItemShemaType(itemShemaID, shemaType) | return 0 if item is not found, or 1 otherwise
-cell AMX_NATIVE_CALL SetItemShemaType(AMX* amx, cell* params)
+// PAWN Native : native SetItemSchemaType(itemSchemaID, SchemaType) | return 0 if item is not found, or 1 otherwise
+cell AMX_NATIVE_CALL SetItemSchemaType(AMX* amx, cell* params)
 {
-	if (itmManager.itemShemaExist(params[1]))
+	if (itmManager.itemSchemaExist(params[1]))
 	{
-		itmManager.accessItemShema(params[1]).setItemType(params[2]);
+		itmManager.accessItemSchema(params[1]).setItemType(params[2]);
 		return 1;
 	}
 	else
 		return 0;
 }
 
-// PAWN Native : native SetItemShemaModel(itemShemaID, shemaModel) | return 0 if item is not found, or 1 otherwise
-cell AMX_NATIVE_CALL SetItemShemaModel(AMX* amx, cell* params)
+// PAWN Native : native SetItemSchemaModel(itemSchemaID, SchemaModel) | return 0 if item is not found, or 1 otherwise
+cell AMX_NATIVE_CALL SetItemSchemaModel(AMX* amx, cell* params)
 {
-	if (itmManager.itemShemaExist(params[1]))
+	if (itmManager.itemSchemaExist(params[1]))
 	{
-		itmManager.accessItemShema(params[1]).setItemModel(params[2]);
+		itmManager.accessItemSchema(params[1]).setItemModel(params[2]);
 		return 1;
 	}
 	else
@@ -114,14 +123,15 @@ cell AMX_NATIVE_CALL SetItemShemaModel(AMX* amx, cell* params)
 
 // ----- ITEMS --------
 
-// PAWN Native : native CreateItem(shemaID) | return : itemID : /!\ Important 
+// PAWN Native : native CreateItem(SchemaID) | return : itemID : /!\ Important 
 cell AMX_NATIVE_CALL CreateItem(AMX* amx, cell* params)
 {
-	// Creating tempo item and assign ItemShema
+	// Creating tempo item and assign ItemSchema
 	try
 	{
-		itmManager.accessItemShema(params[1]);
-		Item tmpItem(itmManager.accessItemShema(params[1]));
+		itmManager.accessItemSchema(params[1]);
+		Item tmpItem(itmManager.accessItemSchema(params[1]));
+		tmpItem.setDrawDistance(defaultDrawDist);
 		return itmManager.addItem(tmpItem);
 	}
 	catch (int e)
@@ -130,13 +140,13 @@ cell AMX_NATIVE_CALL CreateItem(AMX* amx, cell* params)
 	}
 }
 
-// PAWN Native : native CreateItemEx(shemaID, Float:posx, Float:posy, Float:posz, Float:rotx, Float:roty, Float:rotz) | return : itemID : /!\ Important 
+// PAWN Native : native CreateItemEx(SchemaID, Float:posx, Float:posy, Float:posz, Float:rotx, Float:roty, Float:rotz) | return : itemID : /!\ Important 
 cell AMX_NATIVE_CALL CreateItemEx(AMX* amx, cell* params)
 {
 	try
 	{
-		itmManager.accessItemShema(params[1]);
-		Item tmpItem(itmManager.accessItemShema(params[1]));
+		itmManager.accessItemSchema(params[1]);
+		Item tmpItem(itmManager.accessItemSchema(params[1]));
 
 		ObjectPosition posRot;
 		posRot.px = amx_ctof(params[2]);
@@ -148,6 +158,8 @@ cell AMX_NATIVE_CALL CreateItemEx(AMX* amx, cell* params)
 		posRot.rz = amx_ctof(params[7]);
 
 		tmpItem.setPosition(posRot);
+
+		tmpItem.setDrawDistance(defaultDrawDist);
 
 		return itmManager.addItem(tmpItem);
 	}
@@ -328,6 +340,7 @@ cell AMX_NATIVE_CALL SetItemVar(AMX* amx, cell* params)
 			}
 			delete[] varName;
 		}
+		return 0;
 	}
 	else
 		return 0;
@@ -365,13 +378,14 @@ cell AMX_NATIVE_CALL RemoveItemVar(AMX* amx, cell* params)
 			}
 			delete[] varName;
 		}
+		return 2;
 	}
 	else
 		return 0;
 }
 
 // PAWN Native : native GetItemVar(itemID, varID[]) | return 0 if item is not found or if variable doesn't exist, variable value if variable was found
-cell AMX_NATIVE_CALL SetItemVar(AMX* amx, cell* params)
+cell AMX_NATIVE_CALL GetItemVar(AMX* amx, cell* params)
 {
 	if (itmManager.itemExist(params[1]))
 	{
@@ -401,41 +415,179 @@ cell AMX_NATIVE_CALL SetItemVar(AMX* amx, cell* params)
 			}
 			delete[] varName;
 		}
+		return 0;
 	}
 	else
 		return 0;
 }
 
 
+// PAWN Native : native GetItemType(itemID) | return 0 if item is not found, or type otherwise
+cell AMX_NATIVE_CALL GetItemType(AMX* amx, cell* params)
+{
+	if (itmManager.itemExist(params[1]))
+	{
+		return itmManager.accessItem(params[1]).getSchema().getItemType();
+	}
+	else
+		return 0;
+}
+
+// PAWN Native : native GetItemModel(itemID) | return 0 if item is not found, or model id otherwise
+cell AMX_NATIVE_CALL GetItemModel(AMX* amx, cell* params)
+{
+	if (itmManager.itemExist(params[1]))
+	{
+		return itmManager.accessItem(params[1]).getSchema().getItemModel();
+	}
+	else
+		return 0;
+}
+
+// PAWN Native : native GetItemObjectID(itemID) | return 0 if item is not found, or 1 otherwise
+cell AMX_NATIVE_CALL GetItemObjectID(AMX* amx, cell* params)
+{
+	if (itmManager.itemExist(params[1]))
+	{
+		return itmManager.accessItem(params[1]).getObjectID();
+	}
+	else
+		return 0;
+}
+
+// PAWN Native : native ShowItem(itemID) | return 0 if item is not found, 2 if it's already shown or 1 otherwise
+cell AMX_NATIVE_CALL ShowItem(AMX* amx, cell* params)
+{
+	if (itmManager.itemExist(params[1]))
+	{
+		if (itmManager.accessItem(params[1]).Show())
+			return 1;
+		else
+			return 2;
+	}
+	else
+		return 0;
+}
+
+// PAWN Native : native HideItem(itemID) | return 0 if item is not found, 2 if it's already hidden or 1 otherwise
+cell AMX_NATIVE_CALL HideItem(AMX* amx, cell* params)
+{
+	if (itmManager.itemExist(params[1]))
+	{
+		if (itmManager.accessItem(params[1]).Hide())
+			return 1;
+		else
+			return 2;
+	}
+	else
+		return 0;
+}
+
+// PAWN Native : native IsItemShown(itemID) | return 0 is item is not found, 1 if it's shown, or 2 ir it's hidden
+cell AMX_NATIVE_CALL IsItemShown(AMX* amx, cell* params)
+{
+	if (itmManager.itemExist(params[1]))
+	{
+		if (itmManager.accessItem(params[1]).isShown())
+			return 1;
+		else
+			return 2;
+	}
+	else
+		return 0;
+}
+
+// PAWN Native : native SetItemDrawDistance(itemID, Float:distance) | return 0 if item is not found, or 1 otherwise
+cell AMX_NATIVE_CALL SetItemDrawDistance(AMX* amx, cell* params)
+{
+	if (itmManager.itemExist(params[1]))
+	{
+		itmManager.accessItem(params[1]).setDrawDistance(amx_ctof(params[2]));
+		return 1;
+	}
+	else
+		return 0;
+}
+
+/*
+------ NOT IMPLEMENTED YET --------------
+// PAWN Native : native GetItemItemSchema(itemID) |return -1 if item is not found or itemSchema id if it was found
+cell AMX_NATIVE_CALL GetItemItemSchema(AMX* amx, cell* params)
+{
+	if (itmManager.itemExist(params[1]))
+	{
+		return itmManager.accessItem(params[1]).getSchema()
+	}
+	else
+		return -1;
+}*/
 
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports()
 {
-	return SUPPORTS_VERSION | SUPPORTS_AMX_NATIVES;
+	return sampgdk::Supports() | SUPPORTS_AMX_NATIVES;
 }
 
 PLUGIN_EXPORT bool PLUGIN_CALL Load(void **ppData)
 {
 	pAMXFunctions = ppData[PLUGIN_DATA_AMX_EXPORTS];
-	logprintf = (logprintf_t)ppData[PLUGIN_DATA_LOGPRINTF];
+	//logprintf = (logprintf_t)ppData[PLUGIN_DATA_LOGPRINTF];
 
 	logprintf("*******************************\r\n");
 	logprintf(" Papawytems loaded !\r\n");
 	logprintf("Compiled on "__DATE__" at "__TIME__"\r\n");
 	logprintf("*******************************");
-	return true;
+	return sampgdk::Load(ppData);
 }
 
 PLUGIN_EXPORT void PLUGIN_CALL Unload()
 {
-	logprintf(" * Test plugin was unloaded.");
+	logprintf("*******************************\r\n");
+	logprintf(" Papawytems unloaded !\r\n");
+	logprintf("Compiled on "__DATE__" at "__TIME__"\r\n");
+	logprintf("*******************************");
+
+	sampgdk::Unload();
 }
 
 AMX_NATIVE_INFO PluginNatives[] =
 {
-	{ "HelloWorld", HelloWorld },
-	{ "CreateItemShema", CreateItemShema },
+	{ "SetDefaultItemDrawDist", SetDefaultItemDrawDist },
+	// Item Schema
+	//		Creation
+	{ "CreateItemSchema", CreateItemSchema },
+	//		Properties
+	{ "SetItemSchemaName", SetItemSchemaName },
+	{ "SetItemSchemaType", SetItemSchemaType },
+	{ "SetItemSchemaModel", SetItemSchemaModel },
+	// Items
+	//		Creation
 	{ "CreateItem", CreateItem },
+	{ "CreateItemEx", CreateItemEx },
+	//		Positions
+	{ "SetItemPos", SetItemPos },
+	{ "GetItemPos", GetItemPos },
+	{ "SetItemRot", SetItemRot },
+	{ "GetItemRot", GetItemRot },
+	//		Name
+	{ "SetItemName", SetItemName },
+	{ "SetItemDefaultName", SetItemDefaultName },
+	{ "GetItemName", GetItemName },
+	//		Vars
+	{ "SetItemVar", SetItemVar },
+	{ "RemoveItemVar", RemoveItemVar },
+	{ "GetItemVar", GetItemVar },
+	//		Schema accessors
+	{ "GetItemType", GetItemType },
+	{ "GetItemModel", GetItemModel },
+	//		Drawing
+	{ "GetItemObjectID", GetItemObjectID },
+	{ "ShowItem", ShowItem },
+	{ "HideItem", HideItem },
+	{ "IsItemShown", IsItemShown },
+	//		Others
+	{ "SetItemDefaultName", SetItemDefaultName },
+
 	{ 0, 0 }
 };
 

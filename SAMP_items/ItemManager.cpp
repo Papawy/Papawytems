@@ -10,35 +10,35 @@ ItemManager::~ItemManager() { }
 
 // -- Methods
 
-int ItemManager::addItemShema(ItemShema& shema)
+int ItemManager::addItemSchema(ItemSchema& Schema)
 {
-	std::map<int, ItemShema>::iterator it = m_itemShemaPool.end();
+	std::map<int, ItemSchema>::iterator it = m_itemSchemaPool.end();
 	/*int previous_id = it->first;
-	for (it = m_itemShemaPool.begin(); it != m_itemShemaPool.end(); ++it)
+	for (it = m_itemSchemaPool.begin(); it != m_itemSchemaPool.end(); ++it)
 	{
 		if (it->first != previous_id+1)
 		{
-			m_itemShemaPool[it->first + 1] = shema;
+			m_itemSchemaPool[it->first + 1] = Schema;
 			return it->first + 1;
 		}
 		previous_id += 1;
 	}*/
-	if (m_itemShemaPool.empty())
+	if (m_itemSchemaPool.empty())
 	{
-		m_itemShemaPool[0] = shema;
+		m_itemSchemaPool[0] = Schema;
 		return 0;
 	}
 	--it;
-	m_itemShemaPool[it->first + 1] = shema;
+	m_itemSchemaPool[it->first + 1] = Schema;
 	return it->first + 1;
 }
 
-bool ItemManager::removeItemShema(int id)
+bool ItemManager::removeItemSchema(int id)
 {
-	std::map<int, ItemShema>::iterator it = m_itemShemaPool.find(id);
-	if (it != m_itemShemaPool.end())
+	std::map<int, ItemSchema>::iterator it = m_itemSchemaPool.find(id);
+	if (it != m_itemSchemaPool.end())
 	{
-		m_itemShemaPool.erase(id);
+		m_itemSchemaPool.erase(id);
 		return true;
 	}
 	else
@@ -87,12 +87,12 @@ bool ItemManager::removeItem(int id)
 
 // -
 
-ItemShema& ItemManager::accessItemShema(int id)
+ItemSchema& ItemManager::accessItemSchema(int id)
 {
-	std::map<int, ItemShema>::iterator it = m_itemShemaPool.find(id);
-	if (it != m_itemShemaPool.end())
+	std::map<int, ItemSchema>::iterator it = m_itemSchemaPool.find(id);
+	if (it != m_itemSchemaPool.end())
 	{
-		return m_itemShemaPool[id];
+		return m_itemSchemaPool[id];
 	}
 	else
 	{
@@ -113,9 +113,9 @@ Item& ItemManager::accessItem(int id)
 	}
 }
 
-bool ItemManager::itemShemaExist(int id)
+bool ItemManager::itemSchemaExist(int id)
 {
-	if (m_itemShemaPool.find(id) != m_itemShemaPool.end())
+	if (m_itemSchemaPool.find(id) != m_itemSchemaPool.end())
 		return true;
 	else
 		return false;

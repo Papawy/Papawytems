@@ -3,20 +3,22 @@
 
 #include <map>
 
+#include <sampgdk/a_objects.h>
+
 #include "Utils.h"
 
-#include "ItemShema.h"
+#include "ItemSchema.h"
 
 class Item
 {
 public:
 	Item();
-	Item(ItemShema& shema);
-	Item(ItemShema& shema, ObjectPosition position);
+	Item(ItemSchema& Schema);
+	Item(ItemSchema& Schema, ObjectPosition position);
 
 	Item(const Item& other);
 	// I add it if it's requested
-	/*Item(ItemShema& shema,
+	/*Item(ItemSchema& Schema,
 	float posX,
 	float posY,
 	float posZ,
@@ -36,6 +38,10 @@ public:
 
 	bool setVar(std::string varName, int value);
 
+	void setDefaultName();
+
+	void setDrawDistance(float dist);
+
 	// Accessors
 
 	ObjectPosition& getPosition();
@@ -44,23 +50,25 @@ public:
 
 	std::string getName();
 
-	ItemShema& getShema();
+	ItemSchema& getSchema();
+
+	int getObjectID();
 
 	// --
 
-	void Show();
-	void Hide();
+	bool Show();
+	bool Hide();
 
 	bool createVar(std::string varName, int value = 0);
 	bool removeVar(std::string varName);
 	bool isVariableExist(std::string varName);
 
-	void setDefaultName();
+	bool isShown();
 
 	~Item();
 
 private:
-	ItemShema *m_shema;
+	ItemSchema *m_schema;
 
 	std::string m_name;
 
@@ -68,8 +76,10 @@ private:
 	
 	ObjectPosition m_position;
 
-	bool m_showed;
+	bool m_shown;
 
 	int m_gtaObjectId;
+
+	float m_drawDist;
 };
 #endif // ITEM_H_INCLUDED

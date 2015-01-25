@@ -68,6 +68,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;SAMP_ITEMS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>M:\Programmation\SampPlugins\GDK\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -75,6 +76,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <ModuleDefinitionFile>SAMP_items.def</ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>M:\Programmation\SampPlugins\GDK\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sampgdk4.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -83,7 +86,7 @@
   <ItemGroup>
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemManager.cpp" />
-    <ClCompile Include="ItemShema.cpp" />
+    <ClCompile Include="ItemSchema.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SDK\amxplugin.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -91,7 +94,7 @@
   <ItemGroup>
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemManager.h" />
-    <ClInclude Include="ItemShema.h" />
+    <ClInclude Include="ItemSchema.h" />
     <ClInclude Include="SDK\amx\amx.h" />
     <ClInclude Include="SDK\amx\sclinux.h" />
     <ClInclude Include="SDK\plugincommon.h" />
