@@ -1,0 +1,10 @@
+﻿  Item.cpp
+  ItemManager.cpp
+  ItemSchema.cpp
+  main.cpp
+  amxplugin.cpp
+  Utils.cpp
+     Création de la bibliothèque M:\Programmation\SampPlugins\SAMP_items\Release\Papawytems.lib et de l'objet M:\Programmation\SampPlugins\SAMP_items\Release\Papawytems.exp
+  Génération de code en cours
+  Fin de la génération du code
+  Papawytems.vcxproj -> M:\Programmation\SampPlugins\SAMP_items\Release\Papawytems.dll

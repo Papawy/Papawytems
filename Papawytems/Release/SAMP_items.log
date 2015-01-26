@@ -1,0 +1,6 @@
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(381,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (SAMP_items.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  ItemManager.cpp
+     Création de la bibliothèque M:\Programmation\SampPlugins\SAMP_items\Release\Papawytems.lib et de l'objet M:\Programmation\SampPlugins\SAMP_items\Release\Papawytems.exp
+  Génération de code en cours
+  Fin de la génération du code
+  SAMP_items.vcxproj -> M:\Programmation\SampPlugins\SAMP_items\Release\Papawytems.dll
