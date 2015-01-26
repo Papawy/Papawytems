@@ -1,4 +1,4 @@
-# SAMP_items
+# Papawytems
 Plugin that manages items (creation is included)
 
 # Short explanation
