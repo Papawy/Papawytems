@@ -13,16 +13,6 @@ ItemManager::~ItemManager() { }
 int ItemManager::addItemSchema(ItemSchema& Schema)
 {
 	std::map<int, ItemSchema>::iterator it = m_itemSchemaPool.end();
-	/*int previous_id = it->first;
-	for (it = m_itemSchemaPool.begin(); it != m_itemSchemaPool.end(); ++it)
-	{
-		if (it->first != previous_id+1)
-		{
-			m_itemSchemaPool[it->first + 1] = Schema;
-			return it->first + 1;
-		}
-		previous_id += 1;
-	}*/
 	if (m_itemSchemaPool.empty())
 	{
 		m_itemSchemaPool[0] = Schema;
@@ -52,15 +42,6 @@ bool ItemManager::removeItemSchema(int id)
 int ItemManager::addItem(Item& item)
 {
 	std::map<int, Item>::iterator it = m_itemPool.end();
-	/*int previous_id = 0;
-	for (it = m_itemPool.begin(); it != m_itemPool.end(); ++it)
-	{
-		if (it->first != previous_id + 1)
-		{
-			m_itemPool[previous_id + 1] = item;
-			return previous_id + 1;
-		}
-	}*/
 	if (m_itemPool.empty())
 	{
 		m_itemPool[0] = item;
