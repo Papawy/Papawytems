@@ -19,11 +19,11 @@ public:
 
 	// Accessors
 
-	std::string getItemName();
+	std::string getItemName() const { return m_itemName; };
 
-	int getItemType();
+	int getItemType() const { return m_itemType; };
 
-	int getItemModel();
+	int getItemModel() const { return m_modelID; };
 
 	~ItemSchema();
 
@@ -34,5 +34,7 @@ private:
 
 	std::string m_itemName;
 };
+
+bool operator==(const ItemSchema& right, const ItemSchema& left);
 
 #endif // ITEM_Schema_H_INCLUDED

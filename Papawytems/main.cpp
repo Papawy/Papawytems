@@ -172,7 +172,7 @@ cell AMX_NATIVE_CALL CreateItem(AMX* amx, cell* params)
 	}
 }
 
-// PAWN Native : native CreateItemEx(SchemaID, Float:posx, Float:posy, Float:posz, Float:rotx, Float:roty, Float:rotz) | return : itemID : /!\ Important 
+// PAWN Native : native CreateItemEx(SchemaID, Float:posx, Float:posy, Float:posz, Float:rotx, Float:roty, Float:rotz, bool:draw=true) | return : itemID : /!\ Important 
 cell AMX_NATIVE_CALL CreateItemEx(AMX* amx, cell* params)
 {
 	try
@@ -193,7 +193,14 @@ cell AMX_NATIVE_CALL CreateItemEx(AMX* amx, cell* params)
 
 		tmpItem.setDrawDistance(defaultDrawDist);
 
-		return itmManager.addItem(tmpItem);
+		int itemID = itmManager.addItem(tmpItem);
+
+		if (params[8] == 1)
+		{
+			itmManager.accessItem(itemID).Show();
+		}
+
+		return itemID;
 	}
 	catch (int e)
 	{
@@ -487,7 +494,7 @@ cell AMX_NATIVE_CALL GetItemModel(AMX* amx, cell* params)
 		return 0;
 }
 
-// PAWN Native : native GetItemObjectID(itemID) | return 0 if item is not found, or 1 otherwise
+// PAWN Native : native GetItemObjectID(itemID) | return 0 if item is not found, or object id otherwise
 cell AMX_NATIVE_CALL GetItemObjectID(AMX* amx, cell* params)
 {
 	if (itmManager.itemExist(params[1]))
@@ -497,6 +504,7 @@ cell AMX_NATIVE_CALL GetItemObjectID(AMX* amx, cell* params)
 	else
 		return 0;
 }
+
 
 // PAWN Native : native ShowItem(itemID) | return 0 if item is not found, 2 if it's already shown or 1 otherwise
 cell AMX_NATIVE_CALL ShowItem(AMX* amx, cell* params)
@@ -540,6 +548,7 @@ cell AMX_NATIVE_CALL IsItemShown(AMX* amx, cell* params)
 		return 0;
 }
 
+
 // PAWN Native : native SetItemDrawDistance(itemID, Float:distance) | return 0 if item is not found, or 1 otherwise
 cell AMX_NATIVE_CALL SetItemDrawDistance(AMX* amx, cell* params)
 {
@@ -552,18 +561,16 @@ cell AMX_NATIVE_CALL SetItemDrawDistance(AMX* amx, cell* params)
 		return 0;
 }
 
-/*
------- NOT IMPLEMENTED YET --------------
-// PAWN Native : native GetItemItemSchema(itemID) |return -1 if item is not found or itemSchema id if it was found
-cell AMX_NATIVE_CALL GetItemItemSchema(AMX* amx, cell* params)
+// PAWN Native : native GetItemSchemaID(itemID) | return -1 if item is not found or itemSchema id if it was found
+cell AMX_NATIVE_CALL GetItemSchemaID(AMX* amx, cell* params)
 {
 	if (itmManager.itemExist(params[1]))
 	{
-		return itmManager.accessItem(params[1]).getSchema()
+		return itmManager.getItemSchemaID(params[1]);
 	}
 	else
 		return -1;
-}*/
+}
 
 
 PLUGIN_EXPORT unsigned int PLUGIN_CALL Supports()
@@ -628,6 +635,7 @@ AMX_NATIVE_INFO PluginNatives[] =
 	//		Schema accessors
 	{ "GetItemType", GetItemType },
 	{ "GetItemModel", GetItemModel },
+	{ "GetItemSchemaID", GetItemSchemaID },
 	//		Drawing
 	{ "GetItemObjectID", GetItemObjectID },
 	{ "ShowItem", ShowItem },

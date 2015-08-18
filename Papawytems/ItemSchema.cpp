@@ -22,17 +22,26 @@ void ItemSchema::setItemType(int type) { m_itemType = type; }
 
 void ItemSchema::setItemModel(int modelId) { m_modelID = modelId; }
 
-// Accessors
-
-std::string ItemSchema::getItemName() { return m_itemName; }
-
-int ItemSchema::getItemType() { return m_itemType; }
-
-int ItemSchema::getItemModel() { return m_modelID; }
 
 // -- Destructor
 
 ItemSchema::~ItemSchema()
 {
 
+}
+
+// -- Operator Overloading
+
+bool operator==(const ItemSchema& right, const ItemSchema& left)
+{
+	if (
+		right.getItemModel() == left.getItemModel() &&
+		right.getItemName() == left.getItemName() &&
+		right.getItemType() == left.getItemType()
+		)
+	{
+		return true;
+	}
+	else
+		return false;
 }

@@ -26,6 +26,7 @@ public:
 	bool itemExist(int id);
 
 	int getMaxItems();
+	int getItemSchemaID(int itemID);
 
 private:
 	std::map<int, ItemSchema> m_itemSchemaPool;

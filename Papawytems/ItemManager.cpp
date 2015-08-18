@@ -114,3 +114,20 @@ int ItemManager::getMaxItems()
 {
 	return m_itemPool.size();
 }
+
+int ItemManager::getItemSchemaID(int itemID)
+{
+	if (m_itemPool.find(itemID) != m_itemPool.end())
+	{
+		for (std::map<int, ItemSchema>::iterator it = m_itemSchemaPool.begin(); it != m_itemSchemaPool.end(); ++it)
+		{
+			if (it->second == m_itemPool[itemID].getSchema())
+			{
+				return it->first;
+			}
+		}
+		
+	}
+	else
+		return -1;
+}

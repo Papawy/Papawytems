@@ -2,9 +2,8 @@
   ItemManager.cpp
   ItemSchema.cpp
   main.cpp
-  amxplugin.cpp
-  Utils.cpp
      Création de la bibliothèque M:\Programmation\SampPlugins\SAMP_items\Release\Papawytems.lib et de l'objet M:\Programmation\SampPlugins\SAMP_items\Release\Papawytems.exp
   Génération de code en cours
+m:\programmation\sampplugins\samp_items\papawytems\itemmanager.cpp(133): warning C4715: 'ItemManager::getItemSchemaID' : les chemins de contrôle ne retournent pas tous une valeur
   Fin de la génération du code
   Papawytems.vcxproj -> M:\Programmation\SampPlugins\SAMP_items\Release\Papawytems.dll
