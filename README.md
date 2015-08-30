@@ -15,4 +15,4 @@ Next, you should launch CMake and try to generate sources. After that, compile t
 
 # Documentation
 
-Here : https://github.com/Papawy/Papawytems/wiki/--Home
+Here : https://github.com/Papawy/Papawytems/wiki
